@@ -1,0 +1,96 @@
+<%- include("../partials/header") %>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <aside class="col-md-3 col-lg-2 bg-light border-end vh-100 p-3 text-center">
+                <!-- Navbar -->
+                <%- include("../partials/navbar", { activePage: "calendario" }) %>
+
+                <hr>
+                    <!-- Botão centralizado -->
+                    <button class="btn btn-primary mb-3 w-75">+ Criar</button>
+
+                    <!-- Campo de pesquisa -->
+                    <input type="text" class="form-control mb-4" placeholder="Pesquisar eventos">
+
+                    <!-- Meus calendários -->
+                    <h6 class="fw-bold text-start">Meus Eventos</h6>
+                    <ul class="list-unstyled text-start">
+                        <li class="d-flex align-items-center mb-2"><span class="badge bg-primary me-2">■</span>Eventos
+                            Romana Festas</li>
+                        <li class="d-flex align-items-center mb-2"><span
+                                class="badge bg-success me-2">■</span>Aniversários
+                        </li>
+                        <li class="d-flex align-items-center mb-2"><span class="badge bg-warning me-2">■</span>Eventos
+                            de 15
+                            anos</li>
+                        <li class="d-flex align-items-center mb-2"><span
+                                class="badge bg-danger me-2">■</span>Confraternizações</li>
+                        <li class="d-flex align-items-center mb-2"><span class="badge bg-info me-2">■</span>Chá de
+                            Bebê/Recepção</li>
+                        <li class="d-flex align-items-center mb-2"><span class="badge bg-dark me-2">■</span>Casamentos
+                        </li>
+                    </ul>
+            </aside>
+
+
+            <!-- Conteúdo principal -->
+            <main class="col-md-9 col-lg-10 p-4">
+                <!-- Header do calendário -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <div class="btn-group">
+                        <button class="btn btn-outline-secondary" onclick="calendar.today()">Hoje</button>
+                        <button class="btn btn-outline-secondary" onclick="calendar.prev()">←</button>
+                        <button class="btn btn-outline-secondary" onclick="calendar.next()">→</button>
+                    </div>
+                    <h5 id="calendar-title" class="mb-0 fw-bold"></h5>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-secondary" onclick="changeView('dayGridMonth')">Mês</button>
+                        <button class="btn btn-outline-secondary" onclick="changeView('timeGridWeek')">Semana</button>
+                        <button class="btn btn-outline-secondary" onclick="changeView('dayGridDay')">Dia</button>
+                    </div>
+                </div>
+
+                <!-- Calendário -->
+                <div id="calendar"></div>
+            </main>
+        </div>
+    </div>
+
+    <%- include("../partials/footer") %>
+
+        <!-- FullCalendar -->
+        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+        <script>
+            let calendar;
+
+            document.addEventListener('DOMContentLoaded', function () {
+                let calendarEl = document.getElementById('calendar');
+
+                calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    locale: 'pt-br',
+                    headerToolbar: false,
+                    fixedWeekCount: false, // <-- adiciona isso
+                    events: [
+                        { title: 'Aniversário Maria', start: '2025-03-02T19:00:00', color: '#28a745' },
+                        { title: 'Chá de Bebê', start: '2025-03-10T15:00:00', color: '#0dcaf0' },
+                        { title: 'Casamento João & Ana', start: '2025-03-18', color: '#212529' },
+                        { title: 'Confraternização', start: '2025-03-21T20:00:00', color: '#dc3545' },
+                        { title: 'Evento Romana Festas', start: '2025-03-25T10:00:00', color: '#0d6efd' }
+                    ],
+                    datesSet: function (info) {
+                        document.getElementById("calendar-title").textContent = info.view.title;
+                    }
+                });
+
+
+                calendar.render();
+            });
+
+            // Função para trocar a visão
+            function changeView(view) {
+                calendar.changeView(view);
+            }
+        </script>

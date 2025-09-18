@@ -1,0 +1,61 @@
+<%- include("../partials/header") %>
+
+<div class="container my-5">
+  <h2 class="fw-bold text-center mb-4">📊 Análise de Eventos</h2>
+  <p class="text-center text-muted mb-5">Aqui você pode visualizar as principais estatísticas dos eventos realizados.</p>
+
+  <div class="row g-4">
+    <!-- Gráfico 1 -->
+    <div class="col-12 col-md-6">
+      <div class="card shadow-sm border-0 rounded-4 p-3">
+        <h5 class="fw-bold text-center">Eventos por Mês</h5>
+        <canvas id="eventosMes"></canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico 2 -->
+    <div class="col-12 col-md-6">
+      <div class="card shadow-sm border-0 rounded-4 p-3">
+        <h5 class="fw-bold text-center">Dias mais procurados</h5>
+        <canvas id="diasProcurados"></canvas>
+      </div>
+    </div>
+
+    <!-- Gráfico 3 -->
+    <div class="col-12">
+      <div class="card shadow-sm border-0 rounded-4 p-3">
+        <h5 class="fw-bold text-center">Tipos de eventos mais realizados</h5>
+        <canvas id="tiposEventos"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%- include("../partials/footer") %>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Eventos por mês
+  new Chart(document.getElementById('eventosPorMes'), {
+    type: "bar",
+    data: {
+      labels: <%= JSON.stringify(estatisticas.eventosPorMes.labels) %>,
+      datasets: [{
+        label: "Eventos",
+        data: <%= JSON.stringify(estatisticas.eventosPorMes.values) %>,
+        backgroundColor: "rgba(13, 110, 253, 0.6)"
+      }]
+    }
+  });
+
+  // Dias mais procurados
+  new Chart(document.getElementById("diasProcurados"), {
+    type: "doughnut",
+    data: {
+      labels: <%= JSON.stringify(estatisticas.diasMaisProcurados.labels) %>,
+      datasets: [{
+        data: <%= JSON.stringify(estatisticas.diasMaisProcurados.values) %>,
+        backgroundColor: ["#0d6efd", "#ffc107", "#198754"]
+      }]
+    }
+  });
+</script>

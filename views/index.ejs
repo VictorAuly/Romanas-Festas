@@ -1,0 +1,170 @@
+<%- include("partials/header") %>
+    <div class="container my-3">
+
+        <!-- Banner no topo -->
+        <div class="text-center" style="margin: 0; padding: 0;">
+            <img src="/img/logo romana festas aprovado-01.png" alt="Romana Festas" class="img-fluid"
+                style="max-width: 400px; height: auto; display: inline-block;">
+        </div>
+
+
+
+        <!-- Card do formulário -->
+        <div class="card shadow-sm border-0 rounded-4" style="margin-top: 0;">
+            <div class="card-body p-5">
+                <h4 class="fw-bold mb-4 text-dark">🎉 Solicite um orçamento</h4>
+
+                <form>
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label small">Nome</label>
+                            <input type="text" class="form-control form-control-lg" placeholder="Ex: Digite seu nome"
+                                value="<%= evento.nome %>">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small">Endereço de e-mail</label>
+                            <input type="email" class="form-control form-control-lg" placeholder="Ex: seu@email.com"
+                                value="<%= evento.email %>">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small">Telefone</label>
+                            <input type="text" class="form-control form-control-lg"
+                                placeholder="Ex: +55 (xx) xxxxx-xxxx" value="<%= evento.telefone %>">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small">Qual tipo de evento</label>
+                            <select class="form-select form-select-lg">
+                                <option>Aniversário</option>
+                                <option>Casamento</option>
+                                <option>Evento religioso</option>
+                                <option>Chá de bebê</option>
+                                <option>Indefinido</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small">Data e Hora</label>
+                            <input type="datetime-local" class="form-control form-control-lg" name="dataHora"
+                                value="<%= evento.dataHora %>">
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="form-label small">Quantidade de convidados</label>
+                            <select class="form-select form-select-lg">
+                                <option>25</option>
+                                <option>50</option>
+                                <option>100</option>
+                                <option>150</option>
+                                <option>Indefinido</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label class="form-label small">Descrição do evento</label>
+                            <textarea class="form-control form-control-lg" rows="4"
+                                placeholder="Digite os detalhes do evento..."><%= evento.descricao %></textarea>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-4">
+                        <button type="submit" class="btn btn-dark px-5 rounded-pill">Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Informações adicionais -->
+        <div class="card shadow-sm border-0 rounded-4 mt-5">
+            <div class="card-body p-4">
+
+                <!-- Tabs -->
+                <ul class="nav nav-tabs justify-content-center mb-4">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-bs-toggle="tab" href="#info"><i class="bi bi-info-circle"></i>
+                            Informação</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#faq">FAQs</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#opiniao">Opiniões</a></li>
+                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#mapa">Mapa</a></li>
+                </ul>
+
+                <div class="tab-content">
+
+                    <!-- Aba Informação -->
+                    <div class="tab-pane fade show active" id="info">
+                        <h5 class="fw-bold mb-3">📌 Dados de interesse</h5>
+                        <div class="row text-center mb-4">
+                            <div class="col-md-3">
+                                <div class="p-3 bg-light rounded-4 shadow-sm">
+                                    <i class="bi bi-geo-alt fs-4 text-danger"></i>
+                                    <p class="small mt-2">Na cidade</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 bg-light rounded-4 shadow-sm">
+                                    <i class="bi bi-egg-fried fs-4 text-warning"></i>
+                                    <p class="small mt-2">Cozinha para catering</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 bg-light rounded-4 shadow-sm">
+                                    <i class="bi bi-calendar-event fs-4 text-success"></i>
+                                    <p class="small mt-2">Até 2 eventos/dia</p>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="p-3 bg-light rounded-4 shadow-sm">
+                                    <i class="bi bi-clock-history fs-4 text-info"></i>
+                                    <p class="small mt-2">Até 04:00</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold mb-3">ℹ️ Informação</h5>
+                        <p class="text-muted">
+                            A Romana Festas está chegando em Joinville com um projeto moderno 🎊.
+                            Um espaço amplo, sofisticado e rico em detalhes, ideal para personalizar seu evento.
+                            Conta ainda com um encantador Espaço Garden 🌿, perfeito para cerimônias e celebrações
+                            especiais.
+                        </p>
+
+                        <h5 class="fw-bold mb-3">✅ Mais informações</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p><i class="bi bi-check2 text-success"></i> Salões de banquetes</p>
+                                <p><i class="bi bi-check2 text-success"></i> Cozinha para buffet</p>
+                                <p><i class="bi bi-check2 text-success"></i> Pista de dança</p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><i class="bi bi-check2 text-success"></i> Recepção</p>
+                                <p><i class="bi bi-check2 text-success"></i> Cerimônia</p>
+                                <p><i class="bi bi-check2 text-success"></i> Decoração</p>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold mb-3">📍 Localização</h5>
+                        <p class="text-muted">Iririu, Joinville</p>
+                    </div>
+
+                    <!-- Aba FAQs -->
+                    <div class="tab-pane fade" id="faq">
+                        <%- include("abas/faq") %>
+                    </div>
+
+                    <!-- Aba Opiniões -->
+                    <div class="tab-pane fade" id="opiniao">
+                        <%- include("abas/opiniao") %>
+                    </div>
+
+                    <!-- Aba Mapa -->
+                    <div class="tab-pane fade" id="mapa">
+                        <%- include("abas/mapa") %>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include("partials/footer") %>

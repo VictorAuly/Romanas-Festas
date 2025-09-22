@@ -1,40 +1,77 @@
-<%- include("partials/header") %>
-    <div class="container my-3">
+<%- include("../partials/header") %>
 
-        <!-- Banner no topo -->
-        <div class="text-center" style="margin: 0; padding: 0;">
-            <img src="/img/logo romana festas aprovado-01.png" alt="Romana Festas" class="img-fluid"
-                style="max-width: 400px; height: auto; display: inline-block;">
-        </div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <aside class="col-md-3 col-lg-2 bg-light border-end vh-100 p-3 text-center">
+            <%- include("../partials/navbar", { activePage: "calendario" }) %>
 
+            <hr>
+            <!-- Botão centralizado -->
+            <button class="btn btn-primary mb-3 w-75" data-bs-toggle="modal" data-bs-target="#createEventModal">+ Criar</button>
 
+            <!-- Campo de pesquisa -->
+            <input type="text" class="form-control mb-4" placeholder="Pesquisar eventos">
 
-        <!-- Card do formulário -->
-        <div class="card shadow-sm border-0 rounded-4" style="margin-top: 0;">
-            <div class="card-body p-5">
-                <h4 class="fw-bold mb-4 text-dark">🎉 Solicite um orçamento</h4>
+            <!-- Meus calendários -->
+            <h6 class="fw-bold text-start">Meus Eventos</h6>
+            <ul class="list-unstyled text-start">
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-primary me-2">■</span>Eventos Romana Festas</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-success me-2">■</span>Aniversários</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-warning me-2">■</span>Eventos de 15 anos</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-danger me-2">■</span>Confraternizações</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-info me-2">■</span>Chá de Bebê/Recepção</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-dark me-2">■</span>Casamentos</li>
+            </ul>
+        </aside>
 
-                <form>
+        <!-- Conteúdo principal -->
+        <main class="col-md-9 col-lg-10 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary" onclick="calendar.today()">Hoje</button>
+                    <button class="btn btn-outline-secondary" onclick="calendar.prev()">←</button>
+                    <button class="btn btn-outline-secondary" onclick="calendar.next()">→</button>
+                </div>
+                <h5 id="calendar-title" class="mb-0 fw-bold"></h5>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary" onclick="changeView('dayGridMonth')">Mês</button>
+                    <button class="btn btn-outline-secondary" onclick="changeView('timeGridWeek')">Semana</button>
+                    <button class="btn btn-outline-secondary" onclick="changeView('dayGridDay')">Dia</button>
+                </div>
+            </div>
+
+            <div id="calendar"></div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal Avançado de Criar Evento -->
+<div class="modal fade" id="createEventModal" tabindex="-1" aria-labelledby="createEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createEventModalLabel">Criar Novo Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createEventForm">
                     <div class="row g-4">
                         <div class="col-md-6">
                             <label class="form-label small">Nome</label>
-                            <input type="text" class="form-control form-control-lg" placeholder="Ex: Digite seu nome"
-                                value="<%= evento.nome %>">
+                            <input type="text" class="form-control form-control-lg" id="eventNome" placeholder="Digite seu nome" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small">Endereço de e-mail</label>
-                            <input type="email" class="form-control form-control-lg" placeholder="Ex: seu@email.com"
-                                value="<%= evento.email %>">
+                            <label class="form-label small">E-mail</label>
+                            <input type="email" class="form-control form-control-lg" id="eventEmail" placeholder="Ex: seu@email.com" required>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label small">Telefone</label>
-                            <input type="text" class="form-control form-control-lg"
-                                placeholder="Ex: +55 (xx) xxxxx-xxxx" value="<%= evento.telefone %>">
+                            <input type="text" class="form-control form-control-lg" id="eventTelefone" placeholder="Ex: +55 (xx) xxxxx-xxxx" required>
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label small">Qual tipo de evento</label>
-                            <select class="form-select form-select-lg">
+                            <label class="form-label small">Tipo de evento</label>
+                            <select class="form-select form-select-lg" id="eventTipo" required>
                                 <option>Aniversário</option>
                                 <option>Casamento</option>
                                 <option>Evento religioso</option>
@@ -42,16 +79,13 @@
                                 <option>Indefinido</option>
                             </select>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label small">Data e Hora</label>
-                            <input type="datetime-local" class="form-control form-control-lg" name="dataHora"
-                                value="<%= evento.dataHora %>">
+                            <input type="datetime-local" class="form-control form-control-lg" id="eventDataHora" required>
                         </div>
-
                         <div class="col-md-6">
                             <label class="form-label small">Quantidade de convidados</label>
-                            <select class="form-select form-select-lg">
+                            <select class="form-select form-select-lg" id="eventConvidados" required>
                                 <option>25</option>
                                 <option>50</option>
                                 <option>100</option>
@@ -59,112 +93,80 @@
                                 <option>Indefinido</option>
                             </select>
                         </div>
-
                         <div class="col-12">
                             <label class="form-label small">Descrição do evento</label>
-                            <textarea class="form-control form-control-lg" rows="4"
-                                placeholder="Digite os detalhes do evento..."><%= evento.descricao %></textarea>
+                            <textarea class="form-control form-control-lg" rows="4" id="eventDescricao" placeholder="Digite os detalhes do evento..."></textarea>
                         </div>
                     </div>
 
                     <div class="d-flex justify-content-end mt-4">
-                        <button type="submit" class="btn btn-dark px-5 rounded-pill">Continuar</button>
+                        <button type="submit" class="btn btn-dark px-5 rounded-pill">Criar Evento</button>
                     </div>
                 </form>
             </div>
         </div>
-
-        <!-- Informações adicionais -->
-        <div class="card shadow-sm border-0 rounded-4 mt-5">
-            <div class="card-body p-4">
-
-                <!-- Tabs -->
-                <ul class="nav nav-tabs justify-content-center mb-4">
-                    <li class="nav-item">
-                        <a class="nav-link active" data-bs-toggle="tab" href="#info"><i class="bi bi-info-circle"></i>
-                            Informação</a>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#faq">FAQs</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#opiniao">Opiniões</a></li>
-                    <li class="nav-item"><a class="nav-link" data-bs-toggle="tab" href="#mapa">Mapa</a></li>
-                </ul>
-
-                <div class="tab-content">
-
-                    <!-- Aba Informação -->
-                    <div class="tab-pane fade show active" id="info">
-                        <h5 class="fw-bold mb-3">📌 Dados de interesse</h5>
-                        <div class="row text-center mb-4">
-                            <div class="col-md-3">
-                                <div class="p-3 bg-light rounded-4 shadow-sm">
-                                    <i class="bi bi-geo-alt fs-4 text-danger"></i>
-                                    <p class="small mt-2">Na cidade</p>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="p-3 bg-light rounded-4 shadow-sm">
-                                    <i class="bi bi-egg-fried fs-4 text-warning"></i>
-                                    <p class="small mt-2">Cozinha para catering</p>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="p-3 bg-light rounded-4 shadow-sm">
-                                    <i class="bi bi-calendar-event fs-4 text-success"></i>
-                                    <p class="small mt-2">Até 2 eventos/dia</p>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="p-3 bg-light rounded-4 shadow-sm">
-                                    <i class="bi bi-clock-history fs-4 text-info"></i>
-                                    <p class="small mt-2">Até 04:00</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <h5 class="fw-bold mb-3">ℹ️ Informação</h5>
-                        <p class="text-muted">
-                            A Romana Festas está chegando em Joinville com um projeto moderno 🎊.
-                            Um espaço amplo, sofisticado e rico em detalhes, ideal para personalizar seu evento.
-                            Conta ainda com um encantador Espaço Garden 🌿, perfeito para cerimônias e celebrações
-                            especiais.
-                        </p>
-
-                        <h5 class="fw-bold mb-3">✅ Mais informações</h5>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <p><i class="bi bi-check2 text-success"></i> Salões de banquetes</p>
-                                <p><i class="bi bi-check2 text-success"></i> Cozinha para buffet</p>
-                                <p><i class="bi bi-check2 text-success"></i> Pista de dança</p>
-                            </div>
-                            <div class="col-md-6">
-                                <p><i class="bi bi-check2 text-success"></i> Recepção</p>
-                                <p><i class="bi bi-check2 text-success"></i> Cerimônia</p>
-                                <p><i class="bi bi-check2 text-success"></i> Decoração</p>
-                            </div>
-                        </div>
-
-                        <h5 class="fw-bold mb-3">📍 Localização</h5>
-                        <p class="text-muted">Iririu, Joinville</p>
-                    </div>
-
-                    <!-- Aba FAQs -->
-                    <div class="tab-pane fade" id="faq">
-                        <%- include("abas/faq") %>
-                    </div>
-
-                    <!-- Aba Opiniões -->
-                    <div class="tab-pane fade" id="opiniao">
-                        <%- include("abas/opiniao") %>
-                    </div>
-
-                    <!-- Aba Mapa -->
-                    <div class="tab-pane fade" id="mapa">
-                        <%- include("abas/mapa") %>
-                    </div>
-
-                </div>
-            </div>
-        </div>
     </div>
+</div>
 
-    <%- include("partials/footer") %>
+<%- include("../partials/footer") %>
+
+<!-- FullCalendar -->
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+
+<script>
+    let calendar;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        let calendarEl = document.getElementById('calendar');
+
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'pt-br',
+            headerToolbar: false,
+            fixedWeekCount: false,
+            events: [
+                { title: 'Aniversário Maria', start: '2025-03-02T19:00:00', color: '#28a745' },
+                { title: 'Chá de Bebê', start: '2025-03-10T15:00:00', color: '#0dcaf0' },
+                { title: 'Casamento João & Ana', start: '2025-03-18', color: '#212529' },
+                { title: 'Confraternização', start: '2025-03-21T20:00:00', color: '#dc3545' },
+                { title: 'Evento Romana Festas', start: '2025-03-25T10:00:00', color: '#0d6efd' }
+            ],
+            datesSet: function (info) {
+                document.getElementById("calendar-title").textContent = info.view.title;
+            }
+        });
+
+        calendar.render();
+    });
+
+    function changeView(view) {
+        calendar.changeView(view);
+    }
+
+    // Criar evento pelo modal
+    document.getElementById('createEventForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const nome = document.getElementById('eventNome').value;
+        const email = document.getElementById('eventEmail').value;
+        const telefone = document.getElementById('eventTelefone').value;
+        const tipo = document.getElementById('eventTipo').value;
+        const dataHora = document.getElementById('eventDataHora').value;
+        const convidados = document.getElementById('eventConvidados').value;
+        const descricao = document.getElementById('eventDescricao').value;
+
+        if (!nome || !dataHora) return alert("Preencha todos os campos obrigatórios");
+
+        calendar.addEvent({
+            title: `${tipo} - ${nome}`,
+            start: dataHora,
+            color: '#0d6efd',
+            extendedProps: { email, telefone, convidados, descricao }
+        });
+
+        const modalEl = document.getElementById('createEventModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+        this.reset();
+    });
+</script>

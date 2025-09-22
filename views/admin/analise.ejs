@@ -1,61 +1,92 @@
 <%- include("../partials/header") %>
 
-<div class="container my-5">
-  <h2 class="fw-bold text-center mb-4">📊 Análise de Eventos</h2>
-  <p class="text-center text-muted mb-5">Aqui você pode visualizar as principais estatísticas dos eventos realizados.</p>
+<div class="container-fluid">
+  <div class="row g-0">
 
-  <div class="row g-4">
-    <!-- Gráfico 1 -->
-    <div class="col-12 col-md-6">
-      <div class="card shadow-sm border-0 rounded-4 p-3">
-        <h5 class="fw-bold text-center">Eventos por Mês</h5>
-        <canvas id="eventosMes"></canvas>
-      </div>
-    </div>
+    <!-- Sidebar -->
+    <nav class="col-md-3 col-lg-2 d-flex flex-column p-3 min-vh-100">
+      <%- include("../partials/navbar", { activePage: activePage }) %>
+    </nav>
 
-    <!-- Gráfico 2 -->
-    <div class="col-12 col-md-6">
-      <div class="card shadow-sm border-0 rounded-4 p-3">
-        <h5 class="fw-bold text-center">Dias mais procurados</h5>
-        <canvas id="diasProcurados"></canvas>
-      </div>
-    </div>
+    <!-- Conteúdo -->
+    <main class="col-md-9 col-lg-10 p-4">
+      <h2 class="fw-bold text-center mb-4">📊 Análise de Eventos</h2>
+      <p class="text-center text-muted mb-5">
+        Aqui você pode visualizar as principais estatísticas dos eventos realizados.
+      </p>
 
-    <!-- Gráfico 3 -->
-    <div class="col-12">
-      <div class="card shadow-sm border-0 rounded-4 p-3">
-        <h5 class="fw-bold text-center">Tipos de eventos mais realizados</h5>
-        <canvas id="tiposEventos"></canvas>
+      <div class="row g-4 justify-content-center">
+        <!-- Gráfico 1 -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow-sm border-0 rounded-4 p-3 mb-4">
+            <h5 class="fw-bold text-center">Eventos por Mês</h5>
+            <canvas id="eventosMes" style="width: 100%; max-height: 250px;"></canvas>
+          </div>
+        </div>
+
+        <!-- Gráfico 2 -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow-sm border-0 rounded-4 p-3 mb-4">
+            <h5 class="fw-bold text-center">Dias mais procurados</h5>
+            <canvas id="diasProcurados" style="width: 100%; max-height: 250px;"></canvas>
+          </div>
+        </div>
+
+        <!-- Gráfico 3 -->
+        <div class="col-12 col-md-8 col-lg-6">
+          <div class="card shadow-sm border-0 rounded-4 p-3 mb-4">
+            <h5 class="fw-bold text-center">Tipos de eventos mais realizados</h5>
+            <canvas id="tiposEventos" style="width: 100%; max-height: 250px;"></canvas>
+          </div>
+        </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 
 <%- include("../partials/footer") %>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+  const estatisticas = <%- JSON.stringify(estatisticas) %>;
+
   // Eventos por mês
-  new Chart(document.getElementById('eventosPorMes'), {
+  new Chart(document.getElementById('eventosMes'), {
     type: "bar",
     data: {
-      labels: <%= JSON.stringify(estatisticas.eventosPorMes.labels) %>,
+      labels: estatisticas.eventosPorMes.labels,
       datasets: [{
         label: "Eventos",
-        data: <%= JSON.stringify(estatisticas.eventosPorMes.values) %>,
+        data: estatisticas.eventosPorMes.values,
         backgroundColor: "rgba(13, 110, 253, 0.6)"
       }]
-    }
+    },
+    options: { responsive: true, maintainAspectRatio: false }
   });
 
   // Dias mais procurados
   new Chart(document.getElementById("diasProcurados"), {
     type: "doughnut",
     data: {
-      labels: <%= JSON.stringify(estatisticas.diasMaisProcurados.labels) %>,
+      labels: estatisticas.diasMaisProcurados.labels,
       datasets: [{
-        data: <%= JSON.stringify(estatisticas.diasMaisProcurados.values) %>,
+        data: estatisticas.diasMaisProcurados.values,
         backgroundColor: ["#0d6efd", "#ffc107", "#198754"]
       }]
-    }
+    },
+    options: { responsive: true, maintainAspectRatio: false }
+  });
+
+  // Tipos de eventos
+  new Chart(document.getElementById("tiposEventos"), {
+    type: "pie",
+    data: {
+      labels: estatisticas?.tiposEventos?.labels || [],
+      datasets: [{
+        data: estatisticas?.tiposEventos?.values || [],
+        backgroundColor: ["#dc3545", "#0d6efd", "#ffc107", "#198754"]
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false }
   });
 </script>

@@ -1,96 +1,167 @@
 <%- include("../partials/header") %>
 
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <aside class="col-md-3 col-lg-2 bg-light border-end vh-100 p-3 text-center">
-                <!-- Navbar -->
-                <%- include("../partials/navbar", { activePage: "calendario" }) %>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <aside class="col-md-3 col-lg-2 bg-light border-end vh-100 p-3 text-center">
+            <%- include("../partials/navbar", { activePage: "calendario" }) %>
 
-                <hr>
-                    <!-- Botão centralizado -->
-                    <button class="btn btn-primary mb-3 w-75">+ Criar</button>
+            <hr>
+            <!-- Botão centralizado -->
+            <button class="btn btn-primary mb-3 w-75" data-bs-toggle="modal" data-bs-target="#createEventModal">+ Criar</button>
 
-                    <!-- Campo de pesquisa -->
-                    <input type="text" class="form-control mb-4" placeholder="Pesquisar eventos">
+            <!-- Campo de pesquisa -->
+            <input type="text" class="form-control mb-4" placeholder="Pesquisar eventos">
 
-                    <!-- Meus calendários -->
-                    <h6 class="fw-bold text-start">Meus Eventos</h6>
-                    <ul class="list-unstyled text-start">
-                        <li class="d-flex align-items-center mb-2"><span class="badge bg-primary me-2">■</span>Eventos
-                            Romana Festas</li>
-                        <li class="d-flex align-items-center mb-2"><span
-                                class="badge bg-success me-2">■</span>Aniversários
-                        </li>
-                        <li class="d-flex align-items-center mb-2"><span class="badge bg-warning me-2">■</span>Eventos
-                            de 15
-                            anos</li>
-                        <li class="d-flex align-items-center mb-2"><span
-                                class="badge bg-danger me-2">■</span>Confraternizações</li>
-                        <li class="d-flex align-items-center mb-2"><span class="badge bg-info me-2">■</span>Chá de
-                            Bebê/Recepção</li>
-                        <li class="d-flex align-items-center mb-2"><span class="badge bg-dark me-2">■</span>Casamentos
-                        </li>
-                    </ul>
-            </aside>
+            <!-- Meus calendários -->
+            <h6 class="fw-bold text-start">Meus Eventos</h6>
+            <ul class="list-unstyled text-start">
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-primary me-2">■</span>Eventos Romana Festas</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-success me-2">■</span>Aniversários</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-warning me-2">■</span>Eventos de 15 anos</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-danger me-2">■</span>Confraternizações</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-info me-2">■</span>Chá de Bebê/Recepção</li>
+                <li class="d-flex align-items-center mb-2"><span class="badge bg-dark me-2">■</span>Casamentos</li>
+            </ul>
+        </aside>
 
-
-            <!-- Conteúdo principal -->
-            <main class="col-md-9 col-lg-10 p-4">
-                <!-- Header do calendário -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <div class="btn-group">
-                        <button class="btn btn-outline-secondary" onclick="calendar.today()">Hoje</button>
-                        <button class="btn btn-outline-secondary" onclick="calendar.prev()">←</button>
-                        <button class="btn btn-outline-secondary" onclick="calendar.next()">→</button>
-                    </div>
-                    <h5 id="calendar-title" class="mb-0 fw-bold"></h5>
-                    <div class="btn-group">
-                        <button class="btn btn-outline-secondary" onclick="changeView('dayGridMonth')">Mês</button>
-                        <button class="btn btn-outline-secondary" onclick="changeView('timeGridWeek')">Semana</button>
-                        <button class="btn btn-outline-secondary" onclick="changeView('dayGridDay')">Dia</button>
-                    </div>
+        <!-- Conteúdo principal -->
+        <main class="col-md-9 col-lg-10 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary" onclick="calendar.today()">Hoje</button>
+                    <button class="btn btn-outline-secondary" onclick="calendar.prev()">←</button>
+                    <button class="btn btn-outline-secondary" onclick="calendar.next()">→</button>
                 </div>
+                <h5 id="calendar-title" class="mb-0 fw-bold"></h5>
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary" onclick="changeView('dayGridMonth')">Mês</button>
+                    <button class="btn btn-outline-secondary" onclick="changeView('timeGridWeek')">Semana</button>
+                    <button class="btn btn-outline-secondary" onclick="changeView('dayGridDay')">Dia</button>
+                </div>
+            </div>
 
-                <!-- Calendário -->
-                <div id="calendar"></div>
-            </main>
+            <div id="calendar"></div>
+        </main>
+    </div>
+</div>
+
+<!-- Modal Criar Evento Simplificado -->
+<div class="modal fade" id="createEventModal" tabindex="-1" aria-labelledby="createEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createEventModalLabel">Criar Novo Evento</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                <form id="createEventForm">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Nome</label>
+                            <input type="text" class="form-control" id="eventNome" placeholder="Nome completo" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" id="eventEmail" placeholder="Ex: email@example.com" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Telefone</label>
+                            <input type="text" class="form-control" id="eventTelefone" placeholder="Ex: +55 (xx) xxxxx-xxxx" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Tipo de Evento</label>
+                            <select class="form-select" id="eventTipo" required>
+                                <option>Aniversário</option>
+                                <option>Casamento</option>
+                                <option>Evento religioso</option>
+                                <option>Chá de bebê</option>
+                                <option>Indefinido</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Data e Hora</label>
+                            <input type="datetime-local" class="form-control" id="eventDataHora" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Quantidade de Convidados</label>
+                            <input type="number" class="form-control" id="eventConvidados" placeholder="Ex: 50" required>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label">Descrição</label>
+                            <textarea class="form-control" id="eventDescricao" rows="3" placeholder="Descrição do evento"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end mt-3">
+                        <button type="submit" class="btn btn-dark">Criar Evento</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+</div>
 
-    <%- include("../partials/footer") %>
+<%- include("../partials/footer") %>
 
-        <!-- FullCalendar -->
-        <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
-        <script>
-            let calendar;
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
 
-            document.addEventListener('DOMContentLoaded', function () {
-                let calendarEl = document.getElementById('calendar');
+<script>
+    let calendar;
 
-                calendar = new FullCalendar.Calendar(calendarEl, {
-                    initialView: 'dayGridMonth',
-                    locale: 'pt-br',
-                    headerToolbar: false,
-                    fixedWeekCount: false, // <-- adiciona isso
-                    events: [
-                        { title: 'Aniversário Maria', start: '2025-03-02T19:00:00', color: '#28a745' },
-                        { title: 'Chá de Bebê', start: '2025-03-10T15:00:00', color: '#0dcaf0' },
-                        { title: 'Casamento João & Ana', start: '2025-03-18', color: '#212529' },
-                        { title: 'Confraternização', start: '2025-03-21T20:00:00', color: '#dc3545' },
-                        { title: 'Evento Romana Festas', start: '2025-03-25T10:00:00', color: '#0d6efd' }
-                    ],
-                    datesSet: function (info) {
-                        document.getElementById("calendar-title").textContent = info.view.title;
-                    }
-                });
+    document.addEventListener('DOMContentLoaded', function () {
+        let calendarEl = document.getElementById('calendar');
 
-
-                calendar.render();
-            });
-
-            // Função para trocar a visão
-            function changeView(view) {
-                calendar.changeView(view);
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'pt-br',
+            headerToolbar: false,
+            fixedWeekCount: false,
+            events: [
+                { title: 'Casamento - Jane Smith', start: '2025-01-10T19:00:00', color: '#0d6efd',
+                  extendedProps: {
+                      nome: "Jane Smith",
+                      email: "jane.smith@example.com",
+                      telefone: "+987654322",
+                      tipo: "Casamento",
+                      convidados: 150,
+                      descricao: "Casamento romântico e elegante"
+                  }
+                }
+            ],
+            datesSet: function (info) {
+                document.getElementById("calendar-title").textContent = info.view.title;
             }
-        </script>
+        });
+
+        calendar.render();
+    });
+
+    function changeView(view) {
+        calendar.changeView(view);
+    }
+
+    document.getElementById('createEventForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const nome = document.getElementById('eventNome').value;
+        const email = document.getElementById('eventEmail').value;
+        const telefone = document.getElementById('eventTelefone').value;
+        const tipo = document.getElementById('eventTipo').value;
+        const dataHora = document.getElementById('eventDataHora').value;
+        const convidados = document.getElementById('eventConvidados').value;
+        const descricao = document.getElementById('eventDescricao').value;
+
+        calendar.addEvent({
+            title: `${tipo} - ${nome}`,
+            start: dataHora,
+            color: '#0d6efd',
+            extendedProps: { nome, email, telefone, tipo, convidados, descricao }
+        });
+
+        const modalEl = document.getElementById('createEventModal');
+        const modal = bootstrap.Modal.getInstance(modalEl);
+        modal.hide();
+        this.reset();
+    });
+</script>

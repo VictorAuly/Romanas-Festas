@@ -16,9 +16,7 @@ app.use(express.static(path.join(__dirname, "public")));
             tipo: "Aniversário",
             dataHora: "25 de dezembro, 15h",
             convidados: 50,
-            preferencias: "Azul e Prata",
             descricao: "Festa de aniversário cheia de diversão",
-            observacoes: "Inclui bolo e balões"
         },
         {
             // id: 2,
@@ -40,25 +38,28 @@ app.get("/admin/calendario", (req, res) => {
     res.render("admin/calendario",{evento});
 });
 
-app.get("/admin/analise", (req, res) => {
-  // Aqui você poderia buscar os dados reais do banco
+ app.get("/admin/analise", (req, res) => {
   const estatisticas = {
     eventosPorMes: {
-      labels: ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"],
-      values: [5, 8, 12, 7, 15, 10]
+      labels: ["Janeiro", "Fevereiro", "Março"],
+      values: [5, 8, 3]
     },
     diasMaisProcurados: {
-      labels: ["Sábados", "Sextas", "Domingos"],
-      values: [20, 15, 12]
+      labels: ["Sábado", "Domingo", "Sexta"],
+      values: [10, 7, 4]
     },
-    tiposDeEventos: {
-      labels: ["Aniversário", "Casamento", "Chá de Bebê", "Confraternização"],
-      values: [12, 8, 5, 6]
+    tiposEventos: {
+      labels: ["Casamentos", "Aniversários", "Corporativos"],
+      values: [12, 8, 5]
     }
   };
 
-  res.render("admin/analise", { estatisticas });
+  res.render("admin/analise", {
+    activePage: "analise",  // <<< agora separado
+    estatisticas
+  });
 });
+
 
 
 // Rota principal
@@ -67,5 +68,5 @@ app.get("/", (req, res) => {
 });
 
 app.listen(8080, () => {
-  console.log("Servidor rodando em http://localhost:3000");
+  console.log("Servidor rodando em http://localhost:8080");
 });
